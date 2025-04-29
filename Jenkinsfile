@@ -9,6 +9,9 @@ pipeline {
         cluster = "webform"
         service = "webform-svc"
         region = 'ap-southeast-1'
+        DOCKER_HOST = 'tcp://docker:2376'
+        DOCKER_CERT_PATH = '/certs/client'
+        DOCKER_TLS_VERIFY = '1'
     }
 
     stages {
@@ -18,11 +21,6 @@ pipeline {
                     image 'docker:24.0.7-cli' // Use CLI-only image
                     args '-v /certs/client:/certs/client:ro'
                 }
-            }
-            environment {
-                DOCKER_HOST = 'tcp://docker:2376'
-                DOCKER_CERT_PATH = '/certs/client'
-                DOCKER_TLS_VERIFY = '1'
             }
             steps {
                 sh 'docker version'
