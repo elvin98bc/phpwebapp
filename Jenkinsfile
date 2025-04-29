@@ -41,12 +41,20 @@ pipeline {
         }
 
         stage('Deploy to ECS') {
+            agent {
+                docker {
+                    image 'aws-jenkins-agent:latest'
+                    args '-u root'
+                }
+            }
             steps {
-                script {
-                    echo "Deploying Image to ECS..."
-                    withAWS(credentials: 'awscreds', region: "${region}") {
-                        sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
-                    }
+                withAWS(credentials: 'awscreds', region: "${region}") {
+                    sh """
+                        aws ecs update-service \
+                        --cluster ${cluster} \
+                        --service ${service} \
+                        --force-new-deployment
+                    """
                 }
             }
         }
