@@ -17,15 +17,15 @@ pipeline {
                 docker {
                     image 'docker:24.0.7-cli'
                     args '''
-                      -v /certs/client:/certs/client:ro \
-                      -e DOCKER_HOST=tcp://docker:2376 \
-                      -e DOCKER_CERT_PATH=/certs/client \
-                      -e DOCKER_TLS_VERIFY=1
+                    --network jenkins \
+                    -v /certs/client:/certs/client:ro \
+                    -e DOCKER_HOST=tcp://docker:2376 \
+                    -e DOCKER_CERT_PATH=/certs/client \
+                    -e DOCKER_TLS_VERIFY=1
                     '''
                 }
             }
             steps {
-                sh 'echo $DOCKER_HOST'
                 sh 'docker version'
                 sh 'docker ps -a'
             }
