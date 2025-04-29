@@ -1,5 +1,5 @@
 pipeline {
-    agent none  // No global agent, each stage will define its own
+    agent none
 
     environment {
         DOCKER_CONFIG = '/tmp/.docker'
@@ -9,23 +9,23 @@ pipeline {
         cluster = "webform"
         service = "webform-svc"
         region = 'ap-southeast-1'
-        // These will NOT work from here for Docker agent!
     }
 
     stages {
         stage('Docker Test') {
             agent {
                 docker {
-                    image 'docker:24.0.7-cli'  // Use CLI-only image
-                    args '-v /certs/client:/certs/client:ro'
+                    image 'docker:24.0.7-cli'
+                    args '''
+                      -v /certs/client:/certs/client:ro \
+                      -e DOCKER_HOST=tcp://docker:2376 \
+                      -e DOCKER_CERT_PATH=/certs/client \
+                      -e DOCKER_TLS_VERIFY=1
+                    '''
                 }
             }
-            environment {
-                DOCKER_HOST = 'tcp://docker:2376'
-                DOCKER_CERT_PATH = '/certs/client'
-                DOCKER_TLS_VERIFY = '1'
-            }
             steps {
+                sh 'echo $DOCKER_HOST'
                 sh 'docker version'
                 sh 'docker ps -a'
             }
