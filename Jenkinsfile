@@ -40,24 +40,24 @@ pipeline {
             }
         }
 
-        // stage('Deploy to ECS') {
-        //     steps {
-        //         script {
-        //             echo "Deploying Image to ECS..."
-        //             withAWS(credentials: 'awscreds', region: "${region}") {
-        //                 sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Deploy to ECS') {
+            steps {
+                script {
+                    echo "Deploying Image to ECS..."
+                    withAWS(credentials: 'awscreds', region: "${region}") {
+                        sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
+                    }
+                }
+            }
+        }
 
-        // stage('Clean Up') {
-        //     steps {
-        //         script {
-        //             echo 'Cleaning up...'
-        //             sh 'docker rmi -f $repoUri:$BUILD_NUMBER'
-        //         }
-        //     }
-        // }
+        stage('Clean Up') {
+            steps {
+                script {
+                    echo 'Cleaning up...'
+                    sh 'docker rmi -f $repoUri:$BUILD_NUMBER'
+                }
+            }
+        }
     }
 }
