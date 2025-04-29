@@ -20,7 +20,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'docker ps'
+                    sh 'docker ps -a'
                 }
             }
         }
