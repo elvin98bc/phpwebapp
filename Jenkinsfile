@@ -42,10 +42,7 @@ pipeline {
 
         stage('Deploy to ECS') {
             agent {
-                docker {
-                    label 'docker-awscli'
-                    args '-u root'
-                }
+                label 'docker-awscli'
             }
             steps {
                 withAWS(credentials: 'awscreds', region: "${region}") {
