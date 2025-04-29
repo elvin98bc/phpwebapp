@@ -50,14 +50,15 @@ pipeline {
         //             }
         //         }
         //     }
-        // } stage('Clean Up') {
-            steps {
-                script {
-                    echo 'Cleaning up...'
-                    sh 'docker rmi -f $repoUri:$BUILD_NUMBER'
-                }
-            }
-    }      
-}
+        // }
 
-        
+        // stage('Clean Up') {
+        //     steps {
+        //         script {
+        //             echo 'Cleaning up...'
+        //             sh 'docker rmi -f $repoUri:$BUILD_NUMBER'
+        //         }
+        //     }
+        // }
+    }
+}
