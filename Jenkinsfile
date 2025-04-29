@@ -7,7 +7,7 @@ pipeline {
         repoRegistryUrl = "https://538774323759.dkr.ecr.ap-southeast-1.amazonaws.com"
         registryCreds = 'ecr:ap-southeast-1:awscreds'
         cluster = "webform"
-        service = "webform-svc"
+        service = "webform-dev-service-5i7ydg5k"
         region = 'ap-southeast-1'
     }
 
