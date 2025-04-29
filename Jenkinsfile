@@ -41,9 +41,7 @@ pipeline {
         }
 
         stage('Deploy to ECS') {
-            agent {
-                label 'docker_awscli'
-            }
+            agent { label 'docker_awscli' }
             steps {
                 withAWS(credentials: 'awscreds', region: "${region}") {
                     sh """
