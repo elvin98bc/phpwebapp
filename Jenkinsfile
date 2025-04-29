@@ -18,41 +18,46 @@ pipeline {
                 sh 'docker ps -a'
             }
         }
-    }
 
-    stage('Build Docker Image') {
-        steps {
-            script {
-                echo 'Building Docker Image from Dockerfile...'
-                sh 'mkdir -p /tmp/.docker'  // Ensure the directory exists
-                dockerImage = docker.build(repoUri + ":$BUILD_NUMBER")
-            }
-        }
-    }
-
-    stage('Push Docker Image to ECR') {
-        steps {
-            script {
-                echo "Pushing Docker Image to ECR..."
-                docker.withRegistry(repoRegistryUrl, registryCreds) {
-                    dockerImage.push("$BUILD_NUMBER")
-                    dockerImage.push('latest')
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    echo 'Building Docker Image from Dockerfile...'
+                    sh 'mkdir -p /tmp/.docker'  // Ensure the directory exists
+                    dockerImage = docker.build(repoUri + ":$BUILD_NUMBER")
                 }
             }
         }
-    }
 
-    // stage('Deploy to ECS') {
-    //     steps {
-    //         script {
-    //             echo "Deploying Image to ECS..."
-    //             withAWS(credentials: 'awscreds', region: "${region}") {
-    //                 sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
-    //             }
-    //         }
-    //     }
-    // } 
+        stage('Push Docker Image to ECR') {
+            steps {
+                script {
+                    echo "Pushing Docker Image to ECR..."
+                    docker.withRegistry(repoRegistryUrl, registryCreds) {
+                        dockerImage.push("$BUILD_NUMBER")
+                        dockerImage.push('latest')
+                    }
+                }
+            }
+        }
 
+        // stage('Deploy to ECS') {
+        //     steps {
+        //         script {
+        //             echo "Deploying Image to ECS..."
+        //             withAWS(credentials: 'awscreds', region: "${region}") {
+        //                 sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
+        //             }
+        //         }
+        //     }
+        // } stage('Clean Up') {
+            steps {
+                script {
+                    echo 'Cleaning up...'
+                    sh 'docker rmi -f $repoUri:$BUILD_NUMBER'
+                }
+            }
+    }      
 }
 
         
