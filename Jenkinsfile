@@ -13,7 +13,7 @@ pipeline {
 
     stages {
         stage('Docker Test') {
-            agent any
+            agent { label 'docker' }
             steps {
                 sh 'docker version'
                 sh 'docker ps -a'
