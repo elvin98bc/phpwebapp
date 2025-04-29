@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("ssss", $name, $email, $message, $attachment);
 
     if ($stmt->execute()) {
-        echo "Message sent successfully!";
+        echo "Message sent successfully! TESTTT";
     } else {
         echo "Error: " . $stmt->error;
     }
