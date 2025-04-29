@@ -23,7 +23,7 @@ pipeline {
                 script {
                     echo 'Building Docker Image from Dockerfile...'
                     sh 'mkdir -p /tmp/.docker'  // Ensure the directory exists
-                    dockerImage = docker.build(repoUri + ":$BUILD_NUMBER")
+                    dockerImage = docker.build("${repoUri}:$BUILD_NUMBER", "--no-cache .")
                 }
             }
         }
