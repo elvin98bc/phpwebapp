@@ -18,15 +18,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN a2enmod headers
 
-RUN echo '<IfModule mod_headers.c>\n\
-<FilesMatch "\.(html|htm|php)$">\n\
-Header set Cache-Control "no-cache, no-store, must-revalidate"\n\
-Header set Pragma "no-cache"\n\
-Header set Expires 0\n\
-</FilesMatch>\n\
-</IfModule>' >> /etc/apache2/apache2.conf
-
-
 # Copy the application files to the working directory
 COPY app/ ./
 
@@ -48,12 +39,20 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     && docker-php-ext-install pdo pdo_mysql mysqli \
-    && a2enmod rewrite \
+    && a2enmod rewrite headers \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy application files from the builder stage
 COPY --from=builder /var/www/html /var/www/html
+
+RUN echo '<IfModule mod_headers.c>\n\
+<FilesMatch "\.(html|htm|php)$">\n\
+Header set Cache-Control "no-cache, no-store, must-revalidate"\n\
+Header set Pragma "no-cache"\n\
+Header set Expires 0\n\
+</FilesMatch>\n\
+</IfModule>' >> /etc/apache2/apache2.conf
 
 # Set the correct permissions for the web server
 RUN chown -R www-data:www-data /var/www/html \
