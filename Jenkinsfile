@@ -13,9 +13,10 @@ pipeline {
 
     stages {
         stage('Docker Test') {
+            stage('Docker Test') {
             agent {
                 docker {
-                    image 'docker:latest' // or any Docker CLI image
+                    image 'docker:24.0.7-cli' // Use CLI-only image
                     args '-v /certs/client:/certs/client:ro'
                 }
             }
@@ -28,6 +29,7 @@ pipeline {
                 sh 'docker version'
                 sh 'docker ps -a'
             }
+        }
         }
 
         // stage('Build Docker Image') {
