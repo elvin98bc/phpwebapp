@@ -1,23 +1,19 @@
 pipeline {
     agent none  // No global agent, each stage will define its own
 
-    environment {
-        // DOCKER_CONFIG = '/tmp/.docker'  // Set to a directory with write access
-        repoUri = "538774323759.dkr.ecr.ap-southeast-1.amazonaws.com/webform"
-        repoRegistryUrl = "https://538774323759.dkr.ecr.ap-southeast-1.amazonaws.com"
-        registryCreds = 'ecr:ap-southeast-1:awscreds'
-        cluster = "webform"
-        service = "webform-svc"
-        region = 'ap-southeast-1'
-    }
+    // environment {
+    //     DOCKER_CONFIG = '/tmp/.docker'
+    //     repoUri = "538774323759.dkr.ecr.ap-southeast-1.amazonaws.com/webform"
+    //     repoRegistryUrl = "https://538774323759.dkr.ecr.ap-southeast-1.amazonaws.com"
+    //     registryCreds = 'ecr:ap-southeast-1:awscreds'
+    //     cluster = "webform"
+    //     service = "webform-svc"
+    //     region = 'ap-southeast-1'
+    // }
 
     stages {
         stage('Docker Test') {
-            agent {
-                docker {
-                    image 'docker:24.0.7-cli'  // Use the Docker CLI image
-                }
-            }
+            agent any
             steps {
                 sh 'docker version'
                 sh 'docker ps -a'
