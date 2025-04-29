@@ -1,5 +1,6 @@
 pipeline {
     agent none  // No global agent, each stage will define its own
+
     environment {
         DOCKER_CONFIG = '/tmp/.docker'  // Set to a directory with write access
         repoUri = "538774323759.dkr.ecr.ap-southeast-1.amazonaws.com/webform"
@@ -14,8 +15,8 @@ pipeline {
         stage('Docker Test') {
             agent {
                 docker {
-                    image 'docker:latest'
-                    args '-v /certs/client:/certs/client:ro' // if you want to pass certs into container
+                    image 'docker:latest' // or any Docker CLI image
+                    args '-v /certs/client:/certs/client:ro'
                 }
             }
             environment {
@@ -24,9 +25,8 @@ pipeline {
                 DOCKER_TLS_VERIFY = '1'
             }
             steps {
-                script {
-                    sh 'docker ps -a'
-                }
+                sh 'docker version'
+                sh 'docker ps -a'
             }
         }
 
