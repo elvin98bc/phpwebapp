@@ -43,7 +43,7 @@ pipeline {
         stage('Deploy to ECS') {
             agent {
                 docker {
-                    image 'aws-jenkins-agent:latest'
+                    label 'docker-awscli'
                     args '-u root'
                 }
             }
