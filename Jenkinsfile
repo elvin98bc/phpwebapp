@@ -12,12 +12,13 @@ pipeline {
 
     stages {
         stage('Docker Test') {
-            agent {
-                docker {
-                    image 'docker:latest'
-                    // args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socketdsad
-                }
-            }
+            agent { label 'docker' }
+            // agent {
+            //     docker {
+            //         image 'docker:latest'
+            //         // args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socketdsad
+            //     }
+            // }
             steps {
                 script {
                     sh 'docker ps -a'
