@@ -19,6 +19,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Copy the application files to the working directory
 COPY app/ ./
 
+RUN cat index.html
+
 # Install PHP dependencies using Composer
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
