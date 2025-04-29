@@ -35,7 +35,7 @@ pipeline {
                     echo "Pushing Docker Image to ECR..."
                     docker.withRegistry(repoRegistryUrl, registryCreds) {
                         dockerImage.push("$BUILD_NUMBER")
-                        // dockerImage.push('latest')
+                        dockerImage.push('latest')
                     }
                 }
             }
