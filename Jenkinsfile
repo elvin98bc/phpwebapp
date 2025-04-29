@@ -15,9 +15,8 @@ pipeline {
         stage('Docker Test') {
             agent {
                 docker {
-                    image 'docker:24.0.7-cli'
+                    image 'docker:latest'
                     args '''
-                    --network jenkins \
                     -v /certs/client:/certs/client:ro \
                     -e DOCKER_HOST=tcp://docker:2376 \
                     -e DOCKER_CERT_PATH=/certs/client \
