@@ -11,27 +11,17 @@ pipeline {
     }
 
     stages {
-        
-        stage('Checkout') {
-            agent any
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Git Config Test') {
-            agent any
-            steps {
-                sh 'git config remote.origin.url'
-            }
-        }
-
         stage('Docker Test') {
             agent {
                 docker {
                     image 'docker:latest'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                    args '-v /certs/client:/certs/client:ro' // if you want to pass certs into container
                 }
+            }
+            environment {
+                DOCKER_HOST = 'tcp://docker:2376'
+                DOCKER_CERT_PATH = '/certs/client'
+                DOCKER_TLS_VERIFY = '1'
             }
             steps {
                 script {
