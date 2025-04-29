@@ -1,5 +1,5 @@
 pipeline {
-    agent any  // No global agent, each stage will define its own
+    agent none  // No global agent, each stage will define its own
     environment {
         DOCKER_CONFIG = '/tmp/.docker'  // Set to a directory with write access
         repoUri = "538774323759.dkr.ecr.ap-southeast-1.amazonaws.com/webform"
@@ -11,14 +11,28 @@ pipeline {
     }
 
     stages {
+        
+        stage('Checkout') {
+            agent any
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Git Config Test') {
+            agent any
+            steps {
+                sh 'git config remote.origin.url'
+            }
+        }
+
         stage('Docker Test') {
-            agent { label 'docker' }
-            // agent {
-            //     docker {
-            //         image 'docker:latest'
-            //         // args '-v /var/run/docker.sock:/var/run/docker.sock'  // Mount Docker socketdsad
-            //     }
-            // }
+            agent {
+                docker {
+                    image 'docker:latest'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
             steps {
                 script {
                     sh 'docker ps -a'
